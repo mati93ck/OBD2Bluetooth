@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     BluetoothClient bc;
 
-
+//raz dwa trzy
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

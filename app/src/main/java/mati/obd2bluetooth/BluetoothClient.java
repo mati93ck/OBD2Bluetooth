@@ -23,14 +23,12 @@ public class BluetoothClient {
     BluetoothDevice mmDevice;
     OutputStream mmOutputStream;
     InputStream mmInputStream;
-    TextView BT_status;
     Activity activity;
 
     public BluetoothClient(Activity activity)
     {
         this.activity=activity;
         activity.setContentView(R.layout.activity_main);
-        BT_status = (TextView) activity.findViewById(R.id.status_connection);
     }
 
     void findBT()
@@ -38,7 +36,7 @@ public class BluetoothClient {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if(mBluetoothAdapter == null)
         {
-            //Toast.makeText(this, "Brak Bluetooth w telefonie", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.activity, "Brak Bluetooth w telefonie", Toast.LENGTH_LONG).show();
         }
 
         if(!mBluetoothAdapter.isEnabled())
@@ -52,10 +50,10 @@ public class BluetoothClient {
         {
             for(BluetoothDevice device : pairedDevices)
             {
-                if(device.getName().equals("OBDII"))
+                if(device.getName().equals("MATI"))
                 {
                     mmDevice = device;
-                    //Toast.makeText(this, "Wykryto OBD2", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this.activity, "Wykryto OBD2 i otwarto połączenie Bluetooth", Toast.LENGTH_LONG).show();
                     break;
                 }
             }
@@ -69,7 +67,6 @@ public class BluetoothClient {
         mmSocket.connect();
         mmOutputStream = mmSocket.getOutputStream();
         mmInputStream = mmSocket.getInputStream();
-        BT_status.setText("Połączono");
     }
 
     void closeBT() throws IOException
@@ -77,6 +74,6 @@ public class BluetoothClient {
         mmOutputStream.close();
         mmInputStream.close();
         mmSocket.close();
-        BT_status.setText("Rozłączono");
+        //BT_status.setText("Rozłączono");
     }
 }

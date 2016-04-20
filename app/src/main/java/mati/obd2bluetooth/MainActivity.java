@@ -28,8 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     BluetoothClient bc;
-
-//raz dwa trzy
+    TextView BT_status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +37,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        BT_status = (TextView) this.findViewById(R.id.status_connection);
 
 
-        GraphView graph = (GraphView) findViewById(R.id.graph);
+        /*GraphView graph = (GraphView) findViewById(R.id.graph);
         LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
                 new DataPoint(0, 1),
                 new DataPoint(1, 5),
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 new DataPoint(3, 2),
                 new DataPoint(4, 6)
         });
-        graph.addSeries(series);
+        graph.addSeries(series);*/
 
 
     }
@@ -74,11 +74,20 @@ public class MainActivity extends AppCompatActivity {
                 bc.findBT();
                 if(bc.mBluetoothAdapter.isEnabled()) {
                     bc.openBT();
-                    Toast.makeText(MainActivity.this, "za openBT", Toast.LENGTH_LONG).show();
+                    BT_status.setText("Połączono");
+                    //Toast.makeText(MainActivity.this, "Otwarto Bluetooth", Toast.LENGTH_LONG).show();
                 }
                 else Toast.makeText(MainActivity.this, "Najpierw włącz Bluetooth", Toast.LENGTH_LONG).show();
             }
             catch (IOException ex) {}
+        }
+        else if(id==R.id.disconnect) {
+            try {
+                bc.closeBT();
+                BT_status.setText("Rozłączono");
+                Toast.makeText(MainActivity.this, "Rozłączono Bluetooth", Toast.LENGTH_LONG).show();
+            }
+            catch (IOException ex) {} //!!!!!!!!tu dodać obługę przeciwko idiotom (albo wymysliłem, ze można dac okienko wyskakujace informujace o połączeniu)
         }
         return super.onOptionsItemSelected(item);
     }

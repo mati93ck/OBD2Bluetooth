@@ -5,8 +5,19 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
+
+
+import com.github.pires.obd.commands.SpeedCommand;
+import com.github.pires.obd.commands.engine.RPMCommand;
+import com.github.pires.obd.commands.protocol.EchoOffCommand;
+import com.github.pires.obd.commands.protocol.LineFeedOffCommand;
+import com.github.pires.obd.commands.protocol.SelectProtocolCommand;
+import com.github.pires.obd.commands.protocol.TimeoutCommand;
+import com.github.pires.obd.commands.temperature.AmbientAirTemperatureCommand;
+import com.github.pires.obd.enums.ObdProtocols;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +35,7 @@ public class BluetoothClient {
     OutputStream mmOutputStream;
     InputStream mmInputStream;
     Activity activity;
+    private static final String TAG = "MyActivity";
 
     public BluetoothClient(Activity activity)
     {
@@ -50,7 +62,7 @@ public class BluetoothClient {
         {
             for(BluetoothDevice device : pairedDevices)
             {
-                if(device.getName().equals("MATI"))
+                if(device.getName().equals("OBDII"))
                 {
                     mmDevice = device;
                     Toast.makeText(this.activity, "Wykryto OBD2 i otwarto połączenie Bluetooth", Toast.LENGTH_LONG).show();
@@ -76,4 +88,24 @@ public class BluetoothClient {
         mmSocket.close();
         //BT_status.setText("Rozłączono");
     }
+
+    void openOBD()
+    {
+        try {
+            new EchoOffCommand().run(mmSocket.getInputStream(), mmSocket.getOutputStream());
+            new LineFeedOffCommand().run(mmSocket.getInputStream(), mmSocket.getOutputStream());
+            new TimeoutCommand(125).run(mmSocket.getInputStream(), mmSocket.getOutputStream());
+            new SelectProtocolCommand(ObdProtocols.AUTO).run(mmSocket.getInputStream(), mmSocket.getOutputStream());
+            new AmbientAirTemperatureCommand().run(mmSocket.getInputStream(), mmSocket.getOutputStream());
+            //new EchoOffCommand().run(mmInputStream, mmOutputStream);
+            //new LineFeedOffCommand().run(mmInputStream, mmOutputStream);
+            //new TimeoutCommand(125).run(mmInputStream, mmOutputStream);
+            //new SelectProtocolCommand(ObdProtocols.AUTO).run(mmInputStream, mmOutputStream);
+            //new AmbientAirTemperatureCommand().run(mmInputStream, mmOutputStream);
+            //new RPMCommand().run(mmInputStream,mmOutputStream);
+        } catch (Exception e) {
+            // handle errors
+        }
+    }
+
 }

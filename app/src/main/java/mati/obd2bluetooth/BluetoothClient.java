@@ -42,7 +42,7 @@ public class BluetoothClient {
         this.activity=activity;
         activity.setContentView(R.layout.activity_main);
     }
-
+/*
     void findBT()
     {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -89,23 +89,6 @@ public class BluetoothClient {
         //BT_status.setText("Rozłączono");
     }
 
-    void openOBD()
-    {
-        try {
-            new EchoOffCommand().run(mmSocket.getInputStream(), mmSocket.getOutputStream());
-            new LineFeedOffCommand().run(mmSocket.getInputStream(), mmSocket.getOutputStream());
-            new TimeoutCommand(125).run(mmSocket.getInputStream(), mmSocket.getOutputStream());
-            new SelectProtocolCommand(ObdProtocols.AUTO).run(mmSocket.getInputStream(), mmSocket.getOutputStream());
-            new AmbientAirTemperatureCommand().run(mmSocket.getInputStream(), mmSocket.getOutputStream());
-            //new EchoOffCommand().run(mmInputStream, mmOutputStream);
-            //new LineFeedOffCommand().run(mmInputStream, mmOutputStream);
-            //new TimeoutCommand(125).run(mmInputStream, mmOutputStream);
-            //new SelectProtocolCommand(ObdProtocols.AUTO).run(mmInputStream, mmOutputStream);
-            //new AmbientAirTemperatureCommand().run(mmInputStream, mmOutputStream);
-            //new RPMCommand().run(mmInputStream,mmOutputStream);
-        } catch (Exception e) {
-            // handle errors
-        }
-    }
+*/
 
 }
